@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  url_shortener:
+    build: url_shortener/
+    restart: always
+    ports: 
+    - 8000:8000

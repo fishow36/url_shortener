@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<p>Homepage</p>
+
+<form method="POST">{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="Получить короткую ссылку"/>
+</form>
+{% if short_url != None %}
+<p>Короткая ссылка: </p>
+<a href={{short_url}}>{{url_to_show}}</a>
+{% endif %}
+{% endblock %}

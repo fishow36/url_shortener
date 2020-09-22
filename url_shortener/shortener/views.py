@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from .models import URL
 from .forms import URLForm
 import requests
 from urllib3.exceptions import HTTPError as BaseHTTPError
+from django.template import RequestContext
+from django.views.defaults import page_not_found
 
 CHARACTERS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -55,5 +57,18 @@ def redirect_link(request, short, *args, **kwargs):
 		url = URL.objects.get(id=link_id)
 		return redirect(url.long_url)
 	except URL.DoesNotExist:
-		return render(request, 'page_does_not_exist.html', {})
+		return render(request, '404.html', {}, status=404)
+
+
+
+
+def handler404(request, exception, *args, **argv):
+    # response = render('404.html')
+    # response.status_code = 404
+    # return render('404.html', status=404)
+    # return HttpResponseNotFound('404.html')
+    # return page_not_found(request, template_name = "404.html")
+    response = render('404.html',context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
 	

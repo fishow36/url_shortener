@@ -25,7 +25,7 @@ class URLmodeltests(TestCase):
 		self.assertEqual(response.status_code, 200)
 		print("main page returned 200")
 	
-	def test_wrong_link(self):
+	def test_wrong_link_wrong_object(self):
 		response = self.client.get('/aa98', follow=True)
 		SimpleTestCase.assertRedirects(self=self, response=response, 
 		expected_url='/aa98/', 
@@ -33,7 +33,17 @@ class URLmodeltests(TestCase):
 		target_status_code=404,
 		msg_prefix='',
 		fetch_redirect_response=True)
-		print("wrong link returned 404")
+		print("wrong link '/aa98' returned 404")
+	
+	def test_wrong_link_wrong_page_with_dot(self):
+		response = self.client.get('/4.22')
+		self.assertEqual(response.status_code, 404)
+		print("wrong link '/4.22' returned 404")
+
+	def test_wrong_link_wrong_page_many_slashes(self):
+		response = self.client.get('/a/b/c/')
+		self.assertEqual(response.status_code, 404)
+		print("wrong link '/a/b/c/' returned 404")
 	
 	def test_get_object(self):
 		obj = URL.objects.get(id=1)
